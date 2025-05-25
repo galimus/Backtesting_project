@@ -5,6 +5,8 @@ from backtesting.summary_stats import compute_summary_stats
 from backtesting.market_factor import compute_market_factor
 from backtesting.strategies import compute_strategies
 from backtesting.regime_filter import apply_gmm_filter
+from backtesting.xgb_filter import train_xgb_model, apply_xgb_filter
+
 from backtesting.performance_metrics import compute_performance_metrics
 from backtesting.regression_analysis import run_regressions
 from backtesting.sector_analysis import map_sectors, compute_sector_contributions
@@ -34,6 +36,10 @@ def main():
     print("Applying GMM regime filter...")
     results = apply_gmm_filter(results, df_market)
 
+    print("Applying XGBoost filter...")
+    model, df_xgb, xgb_features = train_xgb_model(df_market)
+    results = apply_xgb_filter(results, df_xgb, xgb_features)
+
     print("Calculating metrics...")
     metrics = compute_performance_metrics(results)
     print(metrics)
@@ -52,3 +58,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -14,12 +14,15 @@ def plot_cumulative_returns(results_df: pd.DataFrame, output_dir: str = "results
         "Cumulative_MA_Crossover",
         "Cumulative_Breakout",
         "Cumulative_Lookback_Straddle",
-        "Cumulative_GMM_Filtered"
+        "Cumulative_GMM_Filtered",
+        "Cumulative_XGB_Filtered"
     ]:
         label = name.replace("Cumulative_", "").replace("_", " ")
         plt.plot(results_df["Date"], results_df[name], label=label)
 
-    plt.title("Cumulative Returns: Strategy Comparison")
+
+    plt.yscale("log")
+    plt.title("Cumulative Returns: Strategy Comparison (Log Scale)")
     plt.xlabel("Date")
     plt.ylabel("Cumulative Return (×)")
     plt.legend()

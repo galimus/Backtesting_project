@@ -3,7 +3,7 @@ import statsmodels.api as sm
 
 def run_regressions(results_df: pd.DataFrame, df_market: pd.DataFrame) -> pd.DataFrame:
     strategy_names = [
-        "12M_Momentum", "MA_Crossover", "Breakout", "Lookback_Straddle", "GMM_Filtered"
+        "12M_Momentum", "MA_Crossover", "Breakout", "Lookback_Straddle", "GMM_Filtered", "XGB_Filtered"
     ]
     regression_results = []
 
