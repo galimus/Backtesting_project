@@ -18,11 +18,18 @@ def map_sectors(df: pd.DataFrame) -> dict:
             sector_map[col] = "Other"
     return sector_map
 
-def compute_sector_contributions(df: pd.DataFrame, results_df: pd.DataFrame, sector_map: dict,
+
+def compute_sector_contributions(df: pd.DataFrame,
+                                  results_df: pd.DataFrame,
+                                  sector_map: dict,
+                                  strategy_col: str = "XGB_Filtered",
                                   output_dir: str = "results") -> pd.DataFrame:
     os.makedirs(output_dir, exist_ok=True)
 
-    relevant_dates = results_df["Date"][results_df["GMM_Filtered"].notna()].reset_index(drop=True)
+    if strategy_col not in results_df.columns:
+        raise ValueError(f"Strategy column '{strategy_col}' not found in results_df.")
+
+    relevant_dates = results_df["Date"][results_df[strategy_col].notna()].reset_index(drop=True)
     sector_returns = {"Agri & Livestock": [], "Energy": [], "Metals": []}
 
     for date in relevant_dates:
@@ -46,13 +53,11 @@ def compute_sector_contributions(df: pd.DataFrame, results_df: pd.DataFrame, sec
         "Contribution (%)": [round(100 * v, 2) for v in sector_share.values()]
     })
 
-  
-    csv_path = os.path.join(output_dir, "sector_contribution.csv")
-    txt_path = os.path.join(output_dir, "sector_contribution.txt")
+    csv_path = os.path.join(output_dir, f"sector_contribution_{strategy_col}.csv")
     sector_df.to_csv(csv_path, index=False)
 
- 
-    summary_lines = ["Sector Contribution Summary:\n"]
+    txt_path = os.path.join(output_dir, f"sector_contribution_{strategy_col}.txt")
+    summary_lines = [f"Sector Contribution Summary ({strategy_col}):\n"]
     for row in sector_df.itertuples(index=False):
         summary_lines.append(f"- {row.Sector}: {row._1}% of total return")
     summary_lines.append("\nDiversification across sectors likely contributed to improved risk-adjusted performance.\n")
@@ -62,3 +67,5 @@ def compute_sector_contributions(df: pd.DataFrame, results_df: pd.DataFrame, sec
 
     print(f" Sector summary saved to: {csv_path} and {txt_path}")
     return sector_df
+
+
