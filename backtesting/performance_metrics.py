@@ -3,7 +3,7 @@ import pandas as pd
 
 def compute_performance_metrics(results_df: pd.DataFrame) -> pd.DataFrame:
     strategy_names = [
-        "12M_Momentum", "MA_Crossover", "Breakout", "Lookback_Straddle", "GMM_Filtered"
+        "12M_Momentum", "MA_Crossover", "Breakout", "Lookback_Straddle", "GMM_Filtered", "XGB_Filtered"
     ]
     comparison = []
 
