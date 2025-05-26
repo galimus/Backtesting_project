@@ -39,7 +39,7 @@ Open a terminal (CMD, PowerShell, or Anaconda Prompt) and run:
 ```bash
 cd path\to\Backtesting_project
 python -m venv venv
-venv\Scripts\activate
+source venv\Scripts\activate
 pip install -r requirements.txt
 python run.py
 ```
